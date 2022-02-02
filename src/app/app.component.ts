@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   public taskDesc : string = "";
   public newTaskDesc : string = "";
   public selectedTaskId : number = 0;
-  public newDate : Date = new Date();
+  public newDate : string = new Date().toLocaleString();
   constructor(private http:HttpClient){
 
   }
@@ -28,11 +28,17 @@ export class AppComponent implements OnInit {
     let task = {
       desc : this.taskDesc
     }
-    this.http.post("http://localhost:8080/api/v1/todo/addTask", task ).subscribe(data => alert("Task save successfully"));
+    this.http.post("http://localhost:8080/api/v1/todo/addTask", task ).subscribe(data => {
+      alert("Task save successfully")
+      this.getTasks();
+    });
   }
 
   public deleteTask(taskId :any){
-    this.http.delete("http://localhost:8080/api/v1/todo/deleteTask/"+ taskId ).subscribe(data => alert("Task is deleted"));
+    this.http.delete("http://localhost:8080/api/v1/todo/deleteTask/"+ taskId ).subscribe(data =>{
+       alert("Task is deleted")
+       this.getTasks();
+      });
   }
 
 
@@ -41,13 +47,16 @@ export class AppComponent implements OnInit {
       id : taskId,
       desc : newTaskDesc
     }
-    this.http.put("http://localhost:8080/api/v1/todo/updateTask/", task ).subscribe(data => alert("Task is updated"));
+    this.http.put("http://localhost:8080/api/v1/todo/updateTask/", task ).subscribe(data =>{
+       alert("Task is updated")
+       this.getTasks();
+      });
   }
 
   public setUpdateValue(taskId : any, taskDesc : string){
     this.selectedTaskId = taskId;
     this.newTaskDesc = taskDesc;
-    this.newDate = new Date();
+    this.newDate = new Date().toLocaleString();
   }
 }
 
