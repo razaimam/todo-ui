@@ -26,10 +26,9 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('todo-ui');
   });
 
-  it('should render title', () => {
+  it('should sanitize task descriptions before submitting', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('todo-ui app is running!');
+    const app = fixture.componentInstance;
+    expect(app['sanitizeTaskDesc']('<script>alert(1)</script>')).toBe('scriptalert(1)/script');
   });
 });
